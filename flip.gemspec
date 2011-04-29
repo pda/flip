@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "flip"
   s.version     = Flip::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["Paul Annesley"]
+  s.email       = ["paul@annesley.cc"]
+  s.homepage    = "https://github.com/pda/flip"
+  s.summary     = %q{A feature flipper for Rails web applications.}
+  s.description = %q{Declarative API for specifying features, switchable in declaration, database and cookies.}
 
   s.rubyforge_project = "flip"
 

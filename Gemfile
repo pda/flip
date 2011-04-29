@@ -1,4 +1,2 @@
-source "http://rubygems.org"
-
-# Specify your gem's dependencies in flip.gemspec
+source :rubygems
 gemspec

@@ -34,7 +34,7 @@ class Flip::CookieStrategy < Flip::AbstractStrategy
 
   def cookie_name(definition)
     definition = definition.key unless definition.is_a? Symbol
-    "ff_#{definition}"
+    "flip_#{definition}"
   end
 
   def cookies

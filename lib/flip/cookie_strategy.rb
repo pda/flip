@@ -27,7 +27,6 @@ class Flip::CookieStrategy < Flip::AbstractStrategy
 
   def self.cookies= cookies
     @@cookies = cookies
-    @@data = nil
   end
 
   private

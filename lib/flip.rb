@@ -2,6 +2,7 @@
   concern
   inflector
   core_ext/hash/reverse_merge
+  core_ext/object/blank
 }.each { |name| require "active_support/#{name}" }
 
 %w{

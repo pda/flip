@@ -18,7 +18,7 @@ class Flip::CookieStrategy < Flip::AbstractStrategy
   end
 
   def switch! key, on
-    cookies[cookie_name(key)] = on
+    cookies[cookie_name(key)] = on ? "true" : "false"
   end
 
   def delete! key
@@ -29,12 +29,12 @@ class Flip::CookieStrategy < Flip::AbstractStrategy
     @@cookies = cookies
   end
 
-  private
-
   def cookie_name(definition)
     definition = definition.key unless definition.is_a? Symbol
     "flip_#{definition}"
   end
+
+  private
 
   def cookies
     @@cookies || raise("Cookies not loaded")
@@ -44,12 +44,10 @@ class Flip::CookieStrategy < Flip::AbstractStrategy
   module Loader
     extend ActiveSupport::Concern
     included { around_filter :cookie_feature_strategy }
-    module InstanceMethods
-      def cookie_feature_strategy
-        Flip::CookieStrategy.cookies = cookies
-        yield
-        Flip::CookieStrategy.cookies = nil
-      end
+    def cookie_feature_strategy
+      Flip::CookieStrategy.cookies = cookies
+      yield
+      Flip::CookieStrategy.cookies = nil
     end
   end
 

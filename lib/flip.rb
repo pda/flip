@@ -1,3 +1,6 @@
+module Flip
+end
+
 %w{
   concern
   inflector
@@ -15,6 +18,3 @@
   definition
   feature_set
 }.each { |name| require "flip/#{name}" }
-
-module Flip
-end

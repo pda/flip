@@ -14,7 +14,7 @@ module Flip
     attr_writer :default
 
     def initialize
-      @definitions = Hash.new { |_, k| raise "No feature declared with key :#{k}" }
+      @definitions = Hash.new { |_, k| raise "No feature declared with key #{k.inspect}" }
       @strategies = Hash.new { |_, k| raise "No strategy named #{k}" }
       @default = false
     end

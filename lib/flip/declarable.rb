@@ -1,43 +1,19 @@
 module Flip
   module Declarable
-    extend ActiveSupport::Concern
 
-    included do
-      @feature_set ||= FeatureSet.instance
+    # Adds a new feature definition, creates predicate method.
+    def feature(key, options = {})
+      FeatureSet.instance << Flip::Definition.new(key, options)
     end
 
-    module ClassMethods
+    # Adds a strategy for determining feature status.
+    def strategy(strategy)
+      FeatureSet.instance.add_strategy strategy
+    end
 
-      attr_reader :feature_set
-
-      # Whether the given feature is switched on.
-      def on?(key)
-        @feature_set.on? key
-      end
-
-      private
-
-      # Adds a new feature definition, creates predicate method.
-      def feature(key, options = {})
-        @feature_set << Flip::Definition.new(key, options)
-        define_feature_predicate_method key
-      end
-
-      # Adds a strategy for determining feature status.
-      def strategy(strategy)
-        @feature_set.add_strategy strategy
-      end
-
-      # The default response, boolean or a Proc to be called.
-      def default(default)
-        @feature_set.default = default
-      end
-
-      # Defines a predicate method like Flip.feature_name?
-      def define_feature_predicate_method(key)
-        (class << self; self; end).send(:define_method, "#{key}?") { on? key }
-      end
-
+    # The default response, boolean or a Proc to be called.
+    def default(default)
+      FeatureSet.instance.default = default
     end
 
   end

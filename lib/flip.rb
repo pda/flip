@@ -15,5 +15,10 @@
   declarable
   declaration_strategy
   definition
+  facade
   feature_set
 }.each { |name| require "flip/#{name}" }
+
+module Flip
+  extend Facade
+end

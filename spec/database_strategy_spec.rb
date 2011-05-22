@@ -6,7 +6,7 @@ describe Flip::DatabaseStrategy do
   let(:strategy) { Flip::DatabaseStrategy.new(model_klass) }
   let(:model_klass) do
     Class.new do
-      include Flip::Declarable
+      extend Flip::Declarable
       feature :one
       feature :two, description: "Second one."
       feature :three, default: true

@@ -1,6 +1,4 @@
-module Flip
-end
-
+# ActiveSupport dependencies.
 %w{
   concern
   inflector
@@ -8,6 +6,7 @@ end
   core_ext/object/blank
 }.each { |name| require "active_support/#{name}" }
 
+# Flip files.
 %w{
   abstract_strategy
   controller_filters

@@ -1,18 +1,20 @@
 # Uses :default option passed to feature declaration.
 # May be boolean or a Proc to be passed the definition.
-class Flip::DeclarationStrategy < Flip::AbstractStrategy
+module Flip
+  class DeclarationStrategy < AbstractStrategy
 
-  def description
-    "The default status declared with the feature."
+    def description
+      "The default status declared with the feature."
+    end
+
+    def knows? definition
+      definition.options.key? :default
+    end
+
+    def on? definition
+      default = definition.options[:default]
+      default.is_a?(Proc) ? default.call(definition) : default
+    end
+
   end
-
-  def knows? definition
-    definition.options.key? :default
-  end
-
-  def on? definition
-    default = definition.options[:default]
-    default.is_a?(Proc) ? default.call(definition) : default
-  end
-
 end

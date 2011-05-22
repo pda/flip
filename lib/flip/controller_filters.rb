@@ -1,19 +1,21 @@
-module Flip::ControllerFilters
+module Flip
+  module ControllerFilters
 
-  extend ActiveSupport::Concern
+    extend ActiveSupport::Concern
 
-  module ClassMethods
+    module ClassMethods
 
-    def require_feature key, options = {}
-      before_filter options do
-        flip_feature_disabled key unless Flip.on? key
+      def require_feature key, options = {}
+        before_filter options do
+          flip_feature_disabled key unless Flip.on? key
+        end
       end
+
+    end
+
+    def flip_feature_disabled key
+      # TODO: handle this with a 404
     end
 
   end
-
-  def flip_feature_disabled key
-    # TODO: handle this with a 404
-  end
-
 end

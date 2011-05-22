@@ -1,6 +1,14 @@
 module Flip
   class FeatureSet
 
+    def self.instance
+      @instance ||= self.new
+    end
+
+    def self.reset
+      remove_instance_variable :@instance
+    end
+
     # Sets the default for definitions which fall through the strategies.
     # Accepts boolean or a Proc to be called.
     attr_writer :default

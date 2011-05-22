@@ -24,6 +24,17 @@ describe Flip::FeatureSet do
     end
   end
 
+  describe ".instance" do
+    it "returns a singleton instance" do
+      Flip::FeatureSet.instance.should equal(Flip::FeatureSet.instance)
+    end
+    it "can be reset" do
+      instance_before_reset = Flip::FeatureSet.instance
+      Flip::FeatureSet.reset
+      Flip::FeatureSet.instance.should_not equal(instance_before_reset)
+    end
+  end
+
   describe "#default= and #on? with null strategy" do
     subject { feature_set_with_null_strategy }
     it "defaults to false" do

@@ -33,6 +33,9 @@ describe Flip::FeatureSet do
       Flip::FeatureSet.reset
       Flip::FeatureSet.instance.should_not equal(instance_before_reset)
     end
+    it "can be reset multiple times without error" do
+      2.times { Flip::FeatureSet.reset }
+    end
   end
 
   describe "#default= and #on? with null strategy" do

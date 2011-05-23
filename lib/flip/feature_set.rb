@@ -6,7 +6,7 @@ module Flip
     end
 
     def self.reset
-      remove_instance_variable :@instance
+      @instance = nil
     end
 
     # Sets the default for definitions which fall through the strategies.

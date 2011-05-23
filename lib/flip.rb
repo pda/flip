@@ -19,6 +19,8 @@
   feature_set
 }.each { |name| require "flip/#{name}" }
 
+require "flip/engine" if defined?(Rails)
+
 module Flip
   extend Facade
 end

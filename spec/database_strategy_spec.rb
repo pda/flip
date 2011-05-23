@@ -12,8 +12,8 @@ describe Flip::DatabaseStrategy do
       feature :three, default: true
     end
   end
-  let(:enabled_record) { model_klass.new.tap { |m| m.stub(:on?) { true } } }
-  let(:disabled_record) { model_klass.new.tap { |m| m.stub(:on?) { false } } }
+  let(:enabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { true } } }
+  let(:disabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { false } } }
 
   subject { strategy }
 
@@ -45,12 +45,12 @@ describe Flip::DatabaseStrategy do
   describe "#switch!" do
     it "can switch a feature on" do
       model_klass.should_receive(:find_or_initialize_by_key).with(:one).and_return(disabled_record)
-      disabled_record.should_receive(:update_attributes!).with(on: true)
+      disabled_record.should_receive(:update_attributes!).with(enabled: true)
       strategy.switch! :one, true
     end
     it "can switch a feature off" do
       model_klass.should_receive(:find_or_initialize_by_key).with(:one).and_return(enabled_record)
-      enabled_record.should_receive(:update_attributes!).with(on: false)
+      enabled_record.should_receive(:update_attributes!).with(enabled: false)
       strategy.switch! :one, false
     end
   end

@@ -15,15 +15,15 @@ module Flip
     end
 
     def on? definition
-      feature(definition).on?
+      feature(definition).enabled?
     end
 
     def switchable?
       true
     end
 
-    def switch! key, on
-      @klass.find_or_initialize_by_key(key).update_attributes! on: on
+    def switch! key, enable
+      @klass.find_or_initialize_by_key(key).update_attributes! enabled: enable
     end
 
     def delete! key

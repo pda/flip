@@ -2,7 +2,7 @@
 module Flip
   class DatabaseStrategy < AbstractStrategy
 
-    def initialize(model_klass)
+    def initialize(model_klass = Feature)
       @klass = model_klass
     end
 

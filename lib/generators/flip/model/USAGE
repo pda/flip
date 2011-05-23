@@ -1,0 +1,8 @@
+Description:
+    Generates the Feature database model class for Flip.
+
+Example:
+    rails generate flip:model
+
+    This will create:
+        app/models/feature.rb (class Feature < ActiveRecord::Base)

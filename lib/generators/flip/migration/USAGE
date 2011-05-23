@@ -1,0 +1,5 @@
+Description:
+    Generates migration to create the features table for the Feature model.
+
+Example:
+    rails generate flip:migration

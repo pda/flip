@@ -1,19 +1,20 @@
 require "spec_helper"
 
-class TestableFlipModel
-  extend Flip::Declarable
-
-  strategy Flip::DeclarationStrategy
-  default false
-
-  feature :one
-  feature :two, description: "Second one."
-  feature :three, default: true
-end
-
 describe Flip::Declarable do
 
-  let(:model_class) { TestableFlipModel }
+  let!(:model_class) do
+    Class.new do
+      extend Flip::Declarable
+
+      strategy Flip::DeclarationStrategy
+      default false
+
+      feature :one
+      feature :two, description: "Second one."
+      feature :three, default: true
+    end
+  end
+
   subject { Flip::FeatureSet.instance }
 
   describe "the .on? class method" do

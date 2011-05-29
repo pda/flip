@@ -1,0 +1,7 @@
+Description:
+    Add routes for the Flip control page.
+
+Example:
+    rails generate flip:routes
+
+    This will add routes to app/routes.rb

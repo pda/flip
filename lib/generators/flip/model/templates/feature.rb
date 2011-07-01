@@ -1,4 +1,4 @@
-class Feature
+class Feature < ActiveRecord::Base
   extend Flip::Declarable
 
   strategy Flip::CookieStrategy

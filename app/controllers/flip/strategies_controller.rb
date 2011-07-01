@@ -1,5 +1,5 @@
 module Flip
-  class FeatureStrategiesController < ApplicationController
+  class StrategiesController < ApplicationController
 
     def update
       strategy.switch! feature_key, turn_on?

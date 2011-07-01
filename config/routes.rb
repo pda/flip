@@ -2,9 +2,9 @@ Flip::Engine.routes.draw do
 
   scope module: "Flip" do
 
-    resources :features, path: "/", only: [ :index ] do
+    resources :features, path: "", only: [ :index ] do
 
-      resources :feature_strategies,
+      resources :strategies,
         only: [ :update, :destroy ]
 
     end

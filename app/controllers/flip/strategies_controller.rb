@@ -1,14 +1,16 @@
 module Flip
   class StrategiesController < ApplicationController
 
+    include Flip::Engine.routes.url_helpers
+
     def update
       strategy.switch! feature_key, turn_on?
-      redirect_to admin_features_url
+      redirect_to features_url
     end
 
     def destroy
       strategy.delete! feature_key
-      redirect_to admin_features_url
+      redirect_to features_url
     end
 
     private

@@ -1,0 +1,3 @@
+FlipHelper view/controller helper.
+Optimize DatabaseStrategy.
+CookieStrategy::Loader before/after, not around.

@@ -36,7 +36,7 @@ module Flip
       end
 
       def switch_url(strategy, definition)
-        admin_feature_feature_strategy_path \
+        feature_strategy_path \
           definition.key,
           strategy.name.underscore
       end

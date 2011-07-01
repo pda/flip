@@ -1,8 +1,12 @@
 Flip::Engine.routes.draw do
 
-  root to: "flip/features#index"
+  scope module: "Flip" do
 
-  resources :feature_strategies,
-    only: [ :update, :destroy ]
+    root to: "features#index"
+
+    resources :feature_strategies,
+      only: [ :update, :destroy ]
+
+  end
 
 end

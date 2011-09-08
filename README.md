@@ -108,5 +108,5 @@ A dashboard allows you to view the current state of the feature set, and flip an
 
 
 ----
-Copyright © 2011 Paul Annesley and Learnable Pty Ltd, [MIT Licence](http://www.opensource.org/licenses/mit-license.php).
-
+Created by Paul Annesley  
+Copyright © 2011 Learnable Pty Ltd, [MIT Licence](http://www.opensource.org/licenses/mit-license.php).

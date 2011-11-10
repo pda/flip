@@ -27,7 +27,7 @@ module Flip
     end
 
     def self.cookies= cookies
-      @@cookies = cookies
+      @cookies = cookies
     end
 
     def cookie_name(definition)
@@ -38,7 +38,7 @@ module Flip
     private
 
     def cookies
-      @@cookies || {}
+      self.class.instance_variable_get(:@cookies) || {}
     end
 
     # Include in ApplicationController to push cookies into CookieStrategy.

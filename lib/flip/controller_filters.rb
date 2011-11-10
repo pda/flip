@@ -14,7 +14,7 @@ module Flip
     end
 
     def flip_feature_disabled key
-      # TODO: handle this with a 404
+      raise Flip::Forbidden.new(key)
     end
 
   end

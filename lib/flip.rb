@@ -17,6 +17,7 @@
   definition
   facade
   feature_set
+  forbidden
 }.each { |name| require "flip/#{name}" }
 
 require "flip/engine" if defined?(Rails)

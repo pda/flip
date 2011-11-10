@@ -38,7 +38,7 @@ module Flip
     private
 
     def cookies
-      @@cookies || raise("Cookies not loaded")
+      @@cookies || {}
     end
 
     # Include in ApplicationController to push cookies into CookieStrategy.

@@ -42,12 +42,18 @@ module Flip
     end
 
     # Include in ApplicationController to push cookies into CookieStrategy.
+    # Users before_filter and after_filter rather than around_filter to
+    # avoid pointlessly adding to stack depth.
     module Loader
       extend ActiveSupport::Concern
-      included { around_filter :cookie_feature_strategy }
-      def cookie_feature_strategy
+      included do
+        before_filter :flip_cookie_strategy_before
+        after_filter :flip_cookie_strategy_after
+      end
+      def flip_cookie_strategy_before
         CookieStrategy.cookies = cookies
-        yield
+      end
+      def flip_cookie_strategy_after
         CookieStrategy.cookies = nil
       end
     end

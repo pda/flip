@@ -7,26 +7,26 @@ describe Flip::DeclarationStrategy do
   end
 
   describe "#knows?" do
-    specify "definition without default should be false" do
+    it "does not know definition with no default specified" do
       subject.knows?(Flip::Definition.new :feature).should be_false
     end
-    specify " should be true" do
+    it "knows definition with default set to true" do
       subject.knows?(definition(true)).should be_true
     end
   end
 
-  describe "#on? for Flip::Definition with default of" do
-    specify "true" do
-      subject.on?(definition(true)).should be_true
-    end
-    specify "false" do
-      subject.on?(definition(false)).should be_false
-    end
-    specify "proc returning true" do
-      subject.on?(definition(proc { true })).should be_true
-    end
-    specify "proc returning false" do
-      subject.on?(definition(proc { false })).should be_false
+  describe "#on? for Flip::Definition" do
+    subject { Flip::DeclarationStrategy.new.on? definition(default) }
+    [
+      { default: true, result: true },
+      { default: false, result: false },
+      { default: proc { true }, result: true, name: "proc returning true" },
+      { default: proc { false }, result: false, name: "proc returning false" },
+    ].each do |parameters|
+      context "with default of #{parameters[:name] || parameters[:default]}" do
+        let(:default) { parameters[:default] }
+        it { should == parameters[:result] }
+      end
     end
   end
 

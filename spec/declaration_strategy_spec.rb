@@ -10,8 +10,14 @@ describe Flip::DeclarationStrategy do
     it "does not know definition with no default specified" do
       subject.knows?(Flip::Definition.new :feature).should be_false
     end
+    it "does not know definition with default of nil" do
+      subject.knows?(definition(nil)).should be_false
+    end
     it "knows definition with default set to true" do
       subject.knows?(definition(true)).should be_true
+    end
+    it "knows definition with default set to false" do
+      subject.knows?(definition(false)).should be_true
     end
   end
 

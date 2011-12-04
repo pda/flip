@@ -8,7 +8,7 @@ module Flip
     end
 
     def knows? definition
-      definition.options.key? :default
+      !definition.options[:default].nil?
     end
 
     def on? definition

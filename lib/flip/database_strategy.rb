@@ -23,10 +23,8 @@ module Flip
     end
 
     def switch! key, enable
-      @klass.find_or_initialize_by_key(key).tap do |o|
-        o.enabled = enable
-        o.save!
-      end
+      @klass.attr_accessible :enabled
+      @klass.find_or_initialize_by_key(key).update_attributes! enabled: enable
     end
 
     def delete! key

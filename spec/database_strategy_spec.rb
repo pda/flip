@@ -44,11 +44,13 @@ describe Flip::DatabaseStrategy do
 
   describe "#switch!" do
     it "can switch a feature on" do
+      model_klass.should_receive(:attr_accessible).with(:enabled).and_return(true)
       model_klass.should_receive(:find_or_initialize_by_key).with(:one).and_return(disabled_record)
       disabled_record.should_receive(:update_attributes!).with(enabled: true)
       strategy.switch! :one, true
     end
     it "can switch a feature off" do
+      model_klass.should_receive(:attr_accessible).with(:enabled).and_return(true)
       model_klass.should_receive(:find_or_initialize_by_key).with(:one).and_return(enabled_record)
       enabled_record.should_receive(:update_attributes!).with(enabled: false)
       strategy.switch! :one, false

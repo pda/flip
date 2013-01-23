@@ -1,7 +1,9 @@
 Flip &mdash; flip your features
 ================
 
-[Learnable](https://learnable.com) uses feature flippers ([so does Flickr](http://code.flickr.com/blog/2009/12/02/flipping-out/)) as a tool to help achieve [continuous deployment](http://timothyfitz.wordpress.com/2009/02/10/continuous-deployment-at-imvu-doing-the-impossible-fifty-times-a-day/).
+[Learnable](https://learnable.com) uses feature flippers ([so does Flickr](http://code.flickr.com/blog/2009/12/02/flipping-out/)).
+
+Feature flipping is useful for quickly toggling app feature in production, as well as helping make [continuous deployment](http://timothyfitz.wordpress.com/2009/02/10/continuous-deployment-at-imvu-doing-the-impossible-fifty-times-a-day/) work smoothly.
 
 **Flip** gives us a declarative, layered mechanism to enable and disable features. There's a configurable system-wide default (`default: !Rails.env.production?` works nicely), plus three layers of strategies to determine status per-feature:
 
@@ -104,9 +106,36 @@ Note that conditionally declared routes require a server restart to notice chang
 Command Center
 --------------
 
-A dashboard allows you to view the current state of the feature set, and flip any switchable strategies (database, cookie). *Screenshot coming&hellip;*
+A dashboard allows you to view and flip the features.
 
+![Feature Flipper Dashboard](https://dl.dropbox.com/u/13833591/feature-flipper-screenshot.png "Feature Flipper Dashboard")
+
+Here are some [basic styles](https://gist.github.com/4615688).
+
+When integrating this into your app, you may not want the dashboard to be public.  Here's one way of implementing access control.
+
+app/controllers/admin/features_controller.rb:
+
+    class Admin::FeaturesController < Flip::FeaturesController
+      before_filter :assert_authenticated_as_admin
+    end
+
+app/controllers/admin/feature_strategies_controller.rb:
+
+    class Admin::FeatureStrategiesController < Flip::FeaturesController
+      before_filter :assert_authenticated_as_admin
+    end
+
+routes.rb:
+
+    namespace :admin do
+      resources :features, only: [ :index ] do
+        resources :feature_strategies, only: [ :update, :destroy ]
+      end
+    end
+
+    mount Flip::Engine => "/admin/features"
 
 ----
-Created by Paul Annesley  
-Copyright © 2011 Learnable Pty Ltd, [MIT Licence](http://www.opensource.org/licenses/mit-license.php).
+Created by Paul Annesley
+Copyright © 2011-2013 Learnable Pty Ltd, [MIT Licence](http://www.opensource.org/licenses/mit-license.php).

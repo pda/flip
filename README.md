@@ -70,7 +70,7 @@ Declaring Features
 Checking Features
 -----------------
 
-`on?` or the dynamic predicate methods are used to check feature state:
+`Flip.on?` or the dynamic predicate methods are used to check feature state:
 
     Flip.on? :world_domination   # true
     Flip.world_domination?       # true

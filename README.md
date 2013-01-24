@@ -19,7 +19,7 @@ There is also a configurable system-wide default - !Rails.env.production?` works
 
 Flip has a dashboard UI that's easy to understand and use.
 
-![Feature Flipper Dashboard](https://dl.dropbox.com/u/13833591/feature-flipper-screenshot.png "Feature Flipper Dashboard")
+![Feature Flipper Dashboard](https://dl.dropbox.com/u/13833591/flip-gem-dashboard.png "Feature Flipper Dashboard")
 
 Install
 -------

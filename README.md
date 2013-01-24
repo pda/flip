@@ -1,22 +1,27 @@
 Flip &mdash; flip your features
 ================
 
-[Learnable](https://learnable.com) uses feature flippers ([so does Flickr](http://code.flickr.com/blog/2009/12/02/flipping-out/)).
+[Learnable](https://learnable.com) uses feature flippers, as does [Flickr](http://code.flickr.com/blog/2009/12/02/flipping-out/).
 
-Feature flipping is useful for quickly toggling app feature in production, as well as helping make [continuous deployment](http://timothyfitz.wordpress.com/2009/02/10/continuous-deployment-at-imvu-doing-the-impossible-fifty-times-a-day/) work smoothly.
+Feature flipping is useful for quickly toggling app features in production,
+as well as helping make [continuous deployment](http://timothyfitz.wordpress.com/2009/02/10/continuous-deployment-at-imvu-doing-the-impossible-fifty-times-a-day/) work smoothly.
 
-**Flip** gives us a declarative, layered mechanism to enable and disable features. There's a configurable system-wide default (`default: !Rails.env.production?` works nicely), plus three layers of strategies to determine status per-feature:
+**Flip** gives us a declarative, layered way of enabling and disabling features.
 
-* The declared default, e.g. `feature :world_domination, default: true`,
-* A database-backed strategy, for flipping features site-wide for all users.
-* A cookie-backed strategy, for privately previewing features in your own browser only.
+There are three layers of strategies per feature:
 
-(Hint: that last one is a a killer feature..)
+* default
+* database, to flip features site-wide for all users
+* cookie, to flip features just for you
+
+There is also a configurable system-wide default - !Rails.env.production?` works nicely.
 
 Install
 -------
 
-Note: the alpha version number indicates Flip is currently being extracted from its host application. **The process described here is currently fictional.** But it does have a happy ending.
+Note: the alpha version number indicates Flip is currently being extracted from its host application.
+**The process described here has only been tested a couple times.**
+But it does have a happy ending.
 
 **Rails 3.0 and 3.1+**
 

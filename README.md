@@ -1,27 +1,28 @@
 Flip &mdash; flip your features
 ================
 
-[Learnable](https://learnable.com) uses feature flippers, as does [Flickr](http://code.flickr.com/blog/2009/12/02/flipping-out/).
+**Flip** provides a declarative, layered way of enabling and disabling application functionality at run-time.
 
-Feature flipping is useful for quickly toggling app features in production,
-as well as helping make [continuous deployment](http://timothyfitz.wordpress.com/2009/02/10/continuous-deployment-at-imvu-doing-the-impossible-fifty-times-a-day/) work smoothly.
+This gem optimizes for:
 
-**Flip** gives us a declarative, layered way of enabling and disabling features.
+* developer ease-of-use,
+* visibility and control for other stakeholders (like marketing); and
+* run-time performance
 
 There are three layers of strategies per feature:
 
 * default
 * database, to flip features site-wide for all users
-* cookie, to flip features just for you
+* cookie, to flip features just for you (or someone else)
 
 There is also a configurable system-wide default - !Rails.env.production?` works nicely.
 
+Flip has a dashboard UI that's easy to understand and use.
+
+![Feature Flipper Dashboard](https://dl.dropbox.com/u/13833591/feature-flipper-screenshot.png "Feature Flipper Dashboard")
+
 Install
 -------
-
-Note: the alpha version number indicates Flip is currently being extracted from its host application.
-**The process described here has only been tested a couple times.**
-But it does have a happy ending.
 
 **Rails 3.0 and 3.1+**
 
@@ -33,8 +34,6 @@ But it does have a happy ending.
     
     # Run the migration
     > rake db:migrate
-
-    # They lived happily ever after.
 
 
 Declaring Features
@@ -71,7 +70,7 @@ Declaring Features
 Checking Features
 -----------------
 
-Feature status can be checked by any code using `on?` or using the dynamic predicate methods:
+`on?` or the dynamic predicate methods are used to check feature state:
 
     Flip.on? :world_domination   # true
     Flip.world_domination?       # true
@@ -79,7 +78,7 @@ Feature status can be checked by any code using `on?` or using the dynamic predi
     Flip.on? :shiny_things       # false
     Flip.shiny_things?           # false
 
-Within view and controller methods, the `FlipHelper` module provides a `feature?(key)` method:
+Views and controllers use the `feature?(key)` method:
 
     <div>
       <% if feature? :world_domination %>
@@ -105,19 +104,14 @@ The `Flip::ControllerFilters` module is mixed into the base `ApplicationControll
     
     end
 
-Note that conditionally declared routes require a server restart to notice changes to feature flags, so they're not a good idea; database/cookie feature flipping will be ignored.
+Dashboard
+---------
 
-
-Command Center
---------------
-
-A dashboard allows you to view and flip the features.
-
-![Feature Flipper Dashboard](https://dl.dropbox.com/u/13833591/feature-flipper-screenshot.png "Feature Flipper Dashboard")
+The dashboard provides visibility and control over the features.
 
 Here are some [basic styles](https://gist.github.com/4615688).
 
-When integrating this into your app, you may not want the dashboard to be public.  Here's one way of implementing access control.
+You probably don't want the dashboard to be public.  Here's one way of implementing access control.
 
 app/controllers/admin/features_controller.rb:
 

@@ -109,7 +109,10 @@ Dashboard
 
 The dashboard provides visibility and control over the features.
 
-Here are some [basic styles](https://gist.github.com/4615688).
+The gem includes some basic styles:
+
+    = content_for :stylesheets_head do
+      = stylesheet_link_tag "flip"
 
 You probably don't want the dashboard to be public.  Here's one way of implementing access control.
 

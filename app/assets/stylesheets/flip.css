@@ -1,7 +1,14 @@
 /* Flip */
 
 .flip {
-  margin: 2em 1em 4em 1em;
+  margin: 0;
+}
+
+.flip h1 {
+  color:#666666;
+  font-size: 229%;
+  line-height: 44.928px;
+  margin: 13.5px 0;
 }
 
 .flip th.name, .flip th.description, .flip th.status {
@@ -61,4 +68,3 @@
   padding: 2px 5px;
   margin: 0;
 }
-

@@ -1,20 +1,28 @@
 Flip &mdash; flip your features
 ================
 
-[Learnable](https://learnable.com) uses feature flippers ([so does Flickr](http://code.flickr.com/blog/2009/12/02/flipping-out/)) as a tool to help achieve [continuous deployment](http://timothyfitz.wordpress.com/2009/02/10/continuous-deployment-at-imvu-doing-the-impossible-fifty-times-a-day/).
+**Flip** provides a declarative, layered way of enabling and disabling application functionality at run-time.
 
-**Flip** gives us a declarative, layered mechanism to enable and disable features. There's a configurable system-wide default (`default: !Rails.env.production?` works nicely), plus three layers of strategies to determine status per-feature:
+This gem optimizes for:
 
-* The declared default, e.g. `feature :world_domination, default: true`,
-* A database-backed strategy, for flipping features site-wide for all users.
-* A cookie-backed strategy, for privately previewing features in your own browser only.
+* developer ease-of-use,
+* visibility and control for other stakeholders (like marketing); and
+* run-time performance
 
-(Hint: that last one is a a killer feature..)
+There are three layers of strategies per feature:
+
+* default
+* database, to flip features site-wide for all users
+* cookie, to flip features just for you (or someone else)
+
+There is also a configurable system-wide default - !Rails.env.production?` works nicely.
+
+Flip has a dashboard UI that's easy to understand and use.
+
+![Feature Flipper Dashboard](https://dl.dropbox.com/u/13833591/flip-gem-dashboard.png "Feature Flipper Dashboard")
 
 Install
 -------
-
-Note: the alpha version number indicates Flip is currently being extracted from its host application. **The process described here is currently fictional.** But it does have a happy ending.
 
 **Rails 3.0 and 3.1+**
 
@@ -26,8 +34,6 @@ Note: the alpha version number indicates Flip is currently being extracted from 
     
     # Run the migration
     > rake db:migrate
-
-    # They lived happily ever after.
 
 
 Declaring Features
@@ -64,7 +70,7 @@ Declaring Features
 Checking Features
 -----------------
 
-Feature status can be checked by any code using `on?` or using the dynamic predicate methods:
+`Flip.on?` or the dynamic predicate methods are used to check feature state:
 
     Flip.on? :world_domination   # true
     Flip.world_domination?       # true
@@ -72,7 +78,7 @@ Feature status can be checked by any code using `on?` or using the dynamic predi
     Flip.on? :shiny_things       # false
     Flip.shiny_things?           # false
 
-Within view and controller methods, the `FlipHelper` module provides a `feature?(key)` method:
+Views and controllers use the `feature?(key)` method:
 
     <div>
       <% if feature? :world_domination %>
@@ -98,15 +104,40 @@ The `Flip::ControllerFilters` module is mixed into the base `ApplicationControll
     
     end
 
-Note that conditionally declared routes require a server restart to notice changes to feature flags, so they're not a good idea; database/cookie feature flipping will be ignored.
+Dashboard
+---------
 
+The dashboard provides visibility and control over the features.
 
-Command Center
---------------
+The gem includes some basic styles:
 
-A dashboard allows you to view the current state of the feature set, and flip any switchable strategies (database, cookie). *Screenshot coming&hellip;*
+    = content_for :stylesheets_head do
+      = stylesheet_link_tag "flip"
 
+You probably don't want the dashboard to be public.  Here's one way of implementing access control.
+
+app/controllers/admin/features_controller.rb:
+
+    class Admin::FeaturesController < Flip::FeaturesController
+      before_filter :assert_authenticated_as_admin
+    end
+
+app/controllers/admin/feature_strategies_controller.rb:
+
+    class Admin::FeatureStrategiesController < Flip::FeaturesController
+      before_filter :assert_authenticated_as_admin
+    end
+
+routes.rb:
+
+    namespace :admin do
+      resources :features, only: [ :index ] do
+        resources :feature_strategies, only: [ :update, :destroy ]
+      end
+    end
+
+    mount Flip::Engine => "/admin/features"
 
 ----
-Created by Paul Annesley  
-Copyright © 2011 Learnable Pty Ltd, [MIT Licence](http://www.opensource.org/licenses/mit-license.php).
+Created by Paul Annesley
+Copyright © 2011-2013 Learnable Pty Ltd, [MIT Licence](http://www.opensource.org/licenses/mit-license.php).

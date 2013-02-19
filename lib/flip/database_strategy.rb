@@ -23,6 +23,7 @@ module Flip
     end
 
     def switch! key, enable
+      @klass.attr_accessible :enabled
       @klass.find_or_initialize_by_key(key).update_attributes! enabled: enable
     end
 

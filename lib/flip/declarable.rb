@@ -1,10 +1,6 @@
 module Flip
   module Declarable
 
-    def self.extended(base)
-      FeatureSet.reset
-    end
-
     # Adds a new feature definition, creates predicate method.
     def feature(key, options = {})
       FeatureSet.instance << Flip::Definition.new(key, options)

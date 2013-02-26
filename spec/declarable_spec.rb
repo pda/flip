@@ -13,6 +13,15 @@ describe Flip::Declarable do
       feature :two, description: "Second one."
       feature :three, default: true
     end
+
+    Class.new do
+      extend Flip::Declarable
+
+      strategy Flip::DeclarationStrategy
+      default false
+
+      feature :four, default: true
+    end
   end
 
   subject { Flip::FeatureSet.instance }
@@ -26,6 +35,10 @@ describe Flip::Declarable do
       before(:all) { model_class.send(:default, true) }
       it { should be_on(:one) }
       it { should be_on(:three) }
+    end
+    context "in a second declarable" do
+      before(:all) { model_class.send(:default, true) }
+      it { should be_on(:four) }
     end
   end
 

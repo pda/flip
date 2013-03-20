@@ -5,4 +5,4 @@ Example:
     rails generate flip:initializer
 
     This will create:
-        app/config/initializers/feature.rb (class Feature < ActiveRecord::Base)
+        app/config/initializers/features.rb (class Feature < ActiveRecord::Base)

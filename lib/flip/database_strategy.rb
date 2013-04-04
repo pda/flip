@@ -23,17 +23,17 @@ module Flip
     end
 
     def switch! key, enable
-      @klass.find_or_initialize_by_key(key).update_attributes! enabled: enable
+      @klass.find_or_initialize_by_key(key.to_s).update_attributes! enabled: enable
     end
 
     def delete! key
-      @klass.find_by_key(key).try(:destroy)
+      @klass.find_by_key(key.to_s).try(:destroy)
     end
 
     private
 
     def feature(definition)
-      @klass.find_by_key definition.key
+      @klass.find_by_key definition.key.to_s
     end
 
   end

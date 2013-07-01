@@ -37,6 +37,8 @@ Install
     # Run the migration
     > rake db:migrate
 
+    # Include the Feature model, e.g. config/initializers/feature.rb:
+    require 'feature'
 
 Declaring Features
 ------------------

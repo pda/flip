@@ -23,17 +23,19 @@ module Flip
     end
 
     def switch! key, enable
-      @klass.find_or_initialize_by_key(key.to_s).update_attributes! enabled: enable
+      record = @klass.where(key: key.to_s).first_or_initialize
+      record.enabled = enable
+      record.save
     end
 
     def delete! key
-      @klass.find_by_key(key.to_s).try(:destroy)
+      @klass.where(key: key.to_s).first.try(:destroy)
     end
 
     private
 
     def feature(definition)
-      @klass.find_by_key definition.key.to_s
+      @klass.where(key: definition.key.to_s).first 
     end
 
   end

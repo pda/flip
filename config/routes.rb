@@ -1,6 +1,6 @@
 Flip::Engine.routes.draw do
 
-  scope module: "Flip" do
+  scope module: "flip" do
 
     resources :features, path: "", only: [ :index ] do
 

@@ -20,44 +20,56 @@ describe Flip::DatabaseStrategy do
   its(:switchable?) { should be_true }
   its(:description) { should be_present }
 
+  let(:db_result) { [] }
+  before do
+    allow(model_klass).to(receive(:where).with(key: "one").and_return(db_result))
+  end
+
   describe "#knows?" do
-    it "does not know features that cannot be found" do
-      model_klass.stub(:find_by_key) { nil }
-      strategy.knows?(definition).should be_false
+    context "for unknown key" do
+      it "returns true" do
+        expect(strategy.knows?(definition)).to eq(false)
+      end
     end
-    it "knows features that can be found" do
-      model_klass.stub(:find_by_key) { disabled_record }
-      strategy.knows?(definition).should be_true
+    context "for known key" do
+      let(:db_result) { [disabled_record] }
+      it "returns false" do
+        expect(strategy.knows?(definition)).to eq(true)
+      end
     end
   end
 
   describe "#on?" do
-    it "is true for an enabled record from the database" do
-      model_klass.stub(:find_by_key) { enabled_record }
-      strategy.on?(definition).should be_true
+    context "for an enabled record" do
+      let(:db_result) { [enabled_record] }
+      it "returns true" do
+        expect(strategy.on?(definition)).to eq(true)
+      end
     end
-    it "is false for a disabled record from the database" do
-      model_klass.stub(:find_by_key) { disabled_record }
-      strategy.on?(definition).should be_false
+    context "for a disabled record" do
+      let(:db_result) { [disabled_record] }
+      it "returns true" do
+        expect(strategy.on?(definition)).to eq(false)
+      end
     end
   end
 
   describe "#switch!" do
     it "can switch a feature on" do
-      model_klass.should_receive(:find_or_initialize_by_key).with('one').and_return(disabled_record)
+      expect(db_result).to receive(:first_or_initialize).and_return(disabled_record)
       disabled_record.should_receive(:update_attributes!).with(enabled: true)
       strategy.switch! :one, true
     end
     it "can switch a feature off" do
-      model_klass.should_receive(:find_or_initialize_by_key).with('one').and_return(enabled_record)
+      expect(db_result).to receive(:first_or_initialize).and_return(enabled_record)
       enabled_record.should_receive(:update_attributes!).with(enabled: false)
       strategy.switch! :one, false
     end
   end
 
   describe "#delete!" do
+    let(:db_result) { [enabled_record] }
     it "can delete a feature record" do
-      model_klass.should_receive(:find_by_key).with('one').and_return(enabled_record)
       enabled_record.should_receive(:try).with(:destroy)
       strategy.delete! :one
     end

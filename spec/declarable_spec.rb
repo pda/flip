@@ -23,7 +23,7 @@ describe Flip::Declarable do
       it { should be_on(:three) }
     end
     context "with default set to true" do
-      before(:all) { model_class.send(:default, true) }
+      before { model_class.send(:default, true) }
       it { should be_on(:one) }
       it { should be_on(:three) }
     end

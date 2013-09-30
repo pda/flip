@@ -6,5 +6,6 @@ task :default => :spec
 
 desc "Run specs"
 task :spec do
-  system 'bundle exec rspec --color --format documentation spec/*_spec.rb'
+  command = "bundle exec rspec --color --format documentation spec/*_spec.rb"
+  system(command) || raise("specs returned non-zero code")
 end

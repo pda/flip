@@ -35,7 +35,7 @@ module Flip
     private
 
     def feature(definition)
-      @klass.where(key: definition.key.to_s).first 
+      @klass.where(key: definition.key.to_s).first
     end
 
   end

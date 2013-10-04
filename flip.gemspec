@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/pda/flip"
   s.summary     = %q{A feature flipper for Rails web applications.}
   s.description = %q{Declarative API for specifying features, switchable in declaration, database and cookies.}
+  s.license  = "MIT"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

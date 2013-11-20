@@ -1,4 +1,4 @@
-require "rails/generators/active_record/migration"
+require "rails/generators/migration"
 
 class Flip::MigrationGenerator < Rails::Generators::Base
   include Rails::Generators::Migration

@@ -138,10 +138,10 @@ class Admin::FeaturesController < Flip::FeaturesController
 end
 ```
 
-app/controllers/admin/feature_strategies_controller.rb:
+app/controllers/admin/strategies_controller.rb:
 
 ```ruby
-class Admin::FeatureStrategiesController < Flip::FeaturesController
+class Admin::StrategiesController < Flip::StrategiesController
   before_filter :assert_authenticated_as_admin
 end
 ```
@@ -151,7 +151,7 @@ routes.rb:
 ```ruby
 namespace :admin do
   resources :features, only: [ :index ] do
-    resources :feature_strategies, only: [ :update, :destroy ]
+    resources :strategies, only: [ :update, :destroy ]
   end
 end
 

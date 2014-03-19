@@ -57,12 +57,14 @@ describe Flip::DatabaseStrategy do
   describe "#switch!" do
     it "can switch a feature on" do
       expect(db_result).to receive(:first_or_initialize).and_return(disabled_record)
-      disabled_record.should_receive(:update_attributes!).with(enabled: true)
+      expect(disabled_record).to receive(:enabled=).with(true)
+      expect(disabled_record).to receive(:save!)
       strategy.switch! :one, true
     end
     it "can switch a feature off" do
       expect(db_result).to receive(:first_or_initialize).and_return(enabled_record)
-      enabled_record.should_receive(:update_attributes!).with(enabled: false)
+      expect(enabled_record).to receive(:enabled=).with(false)
+      expect(enabled_record).to receive(:save!)
       strategy.switch! :one, false
     end
   end

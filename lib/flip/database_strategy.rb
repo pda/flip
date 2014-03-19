@@ -23,9 +23,9 @@ module Flip
     end
 
     def switch! key, enable
-      @klass.where(key: key.to_s).first_or_initialize.update_attributes!(
-        enabled: enable
-      )
+      record = @klass.where(key: key.to_s).first_or_initialize
+      record.enabled = enable
+      record.save!
     end
 
     def delete! key

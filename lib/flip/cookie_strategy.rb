@@ -19,7 +19,10 @@ module Flip
     end
 
     def switch! key, on
-      cookies[cookie_name(key)] = on ? "true" : "false"
+      cookies[cookie_name(key)] = {
+       value: (on ? "true" : "false"),
+       domain: :all
+      }
     end
 
     def delete! key

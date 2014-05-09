@@ -11,7 +11,9 @@ module Flip
     end
 
     def on? definition
-      cookies[cookie_name(definition)] === "true"
+      cookie = cookies[cookie_name(definition)]
+      cookie_value = cookie.is_a?(Hash) ? cookie['value'] : cookie
+      cookie_value === 'true'
     end
 
     def switchable?
@@ -19,7 +21,10 @@ module Flip
     end
 
     def switch! key, on
-      cookies[cookie_name(key)] = on ? "true" : "false"
+      cookies[cookie_name(key)] = {
+        'value' => (on ? "true" : "false"),
+        'domain' => :all
+      }
     end
 
     def delete! key

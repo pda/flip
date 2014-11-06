@@ -21,7 +21,7 @@ There is also a configurable system-wide default - !Rails.env.production?` works
 
 Flip has a dashboard UI that's easy to understand and use.
 
-![Feature Flipper Dashboard](https://dl.dropbox.com/u/13833591/flip-gem-dashboard.png "Feature Flipper Dashboard")
+![Feature Flipper Dashboard](https://cloud.githubusercontent.com/assets/828243/4934741/a5773568-65a4-11e4-98d8-5e9a32720b2e.png)
 
 Install
 -------
@@ -67,7 +67,7 @@ class Feature < ActiveRecord::Base
   # Provide a description, normally derived from the feature name.
   feature :something,
     default: true,
-    description: "Ability to purchase enrollments in courses",
+    description: "Ability to purchase enrollments in courses"
 
 end
 ```
@@ -100,7 +100,7 @@ Views and controllers use the `feature?(key)` method:
 Feature Flipping Controllers
 ----------------------------
 
-The `Flip::ControllerFilters` module is mixed into the base `ApplicationController` class.  The following controller will respond with 404 Page Not Found to all but the `index` action unless the :new_stuff feature is enabled:
+The `Flip::ControllerFilters` module is mixed into the base `ApplicationController` class.  The following controller will respond with 404 Page Not Found to all but the `index` action unless the `:something` feature is enabled:
 
 ```ruby
 class SampleController < ApplicationController

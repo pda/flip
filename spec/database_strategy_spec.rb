@@ -59,8 +59,8 @@ describe Flip::DatabaseStrategy do
     end
   end
 
-  describe "#on?" do
-    before { model_klass.clear_feature_cache }
+  describe "#on? with feature cache" do
+    before { model_klass.start_feature_cache }
     context "for an enabled record" do
       let(:db_result) { [enabled_record] }
       it "returns true" do
@@ -69,7 +69,7 @@ describe Flip::DatabaseStrategy do
     end
   end
 
-  describe "#on? with feature cache" do
+  describe "#on?" do
     context "for an enabled record" do
       let(:db_result) { [enabled_record] }
       it "returns true" do

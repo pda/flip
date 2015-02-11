@@ -5,13 +5,16 @@ module Flip
       @use_feature_cache
     end
 
-    def clear_feature_cache
+    def start_feature_cache
       @use_feature_cache = true
       @features = nil
     end
 
     def feature_cache
-      @features ||= all
+      return @features if @features
+      @features = {}
+      all.each { |f| @features[f.key] = f }
+      @features
     end
 
   end

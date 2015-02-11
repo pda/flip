@@ -34,15 +34,15 @@ describe Flip::Cacheable do
   describe "with feature cache" do
     context "initial context" do
       it { should respond_to(:use_feature_cache) }
-      it { should respond_to(:clear_feature_cache) }
+      it { should respond_to(:start_feature_cache) }
       it { should respond_to(:feature_cache) }
       specify { model_class.use_feature_cache.should be_nil }
     end
 
     context "after a cache clear" do
-      before { model_class.clear_feature_cache }
+      before { model_class.start_feature_cache }
       specify { model_class.use_feature_cache.should be_true }
-      specify { model_class.feature_cache.map{ |f| f.key } == ['A', 'B', 'C']}
+      specify { model_class.feature_cache.size == 3}
     end
   end
 

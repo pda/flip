@@ -36,7 +36,7 @@ module Flip
 
     def feature(definition)
       if @klass.respond_to?(:use_feature_cache) && @klass.use_feature_cache
-        @klass.feature_cache.select{ |f| f.key == definition.key.to_s }.first
+        @klass.feature_cache[definition.key.to_s]
       else
         @klass.where(key: definition.key.to_s).first
       end

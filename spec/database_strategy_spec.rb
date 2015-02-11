@@ -5,13 +5,33 @@ describe Flip::DatabaseStrategy do
   let(:definition) { double("definition", key: "one") }
   let(:strategy) { Flip::DatabaseStrategy.new(model_klass) }
   let(:model_klass) do
+    class Sample
+      attr_accessor :key
+
+      def enabled?
+        true
+      end
+    end
+
     Class.new do
+      extend Flip::Cacheable
       extend Flip::Declarable
       feature :one
       feature :two, description: "Second one."
       feature :three, default: true
+
+      def self.all
+        list = []
+        keys = ['one', 'two', 'three']
+        3.times do |i|
+          list << Sample.new
+          list.last.key = keys[i]
+        end
+        list
+      end
     end
   end
+
   let(:enabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { true } } }
   let(:disabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { false } } }
 
@@ -40,6 +60,16 @@ describe Flip::DatabaseStrategy do
   end
 
   describe "#on?" do
+    before { model_klass.clear_feature_cache }
+    context "for an enabled record" do
+      let(:db_result) { [enabled_record] }
+      it "returns true" do
+        expect(strategy.on?(definition)).to eq(true)
+      end
+    end
+  end
+
+  describe "#on? with feature cache" do
     context "for an enabled record" do
       let(:db_result) { [enabled_record] }
       it "returns true" do

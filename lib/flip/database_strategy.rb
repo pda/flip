@@ -35,7 +35,11 @@ module Flip
     private
 
     def feature(definition)
-      @klass.where(key: definition.key.to_s).first
+      if @klass.respond_to?(:use_feature_cache) && @klass.use_feature_cache
+        @klass.feature_cache.select{ |f| f.key == definition.key.to_s }.first
+      else
+        @klass.where(key: definition.key.to_s).first
+      end
     end
 
   end

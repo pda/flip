@@ -1,6 +1,10 @@
 module Flip
   module Cacheable
 
+    def use_feature_cache=(value)
+      @use_feature_cache = value
+    end
+
     def use_feature_cache
       @use_feature_cache
     end

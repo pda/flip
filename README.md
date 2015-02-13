@@ -172,6 +172,8 @@ instead of every call to Flip#on? generating a call to the database.  This is
 helpful if you have a larger Rails application and more than a few features
 defined.
 
+To start or reset the cache, just call #start_feature_cache.
+
 
 ----
 Created by Paul Annesley

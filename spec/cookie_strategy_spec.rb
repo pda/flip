@@ -26,26 +26,26 @@ describe Flip::CookieStrategy do
   describe "cookie interrogration" do
     context "enabled feature" do
       specify "#knows? is true" do
-        strategy.knows?(:one).should be_true
+        strategy.knows?(:one).should be true
       end
       specify "#on? is true" do
-        strategy.on?(:one).should be_true
+        strategy.on?(:one).should be true
       end
     end
     context "disabled feature" do
       specify "#knows? is true" do
-        strategy.knows?(:two).should be_true
+        strategy.knows?(:two).should be true
       end
       specify "#on? is false" do
-        strategy.on?(:two).should be_false
+        strategy.on?(:two).should be false
       end
     end
     context "feature with no cookie present" do
       specify "#knows? is false" do
-        strategy.knows?(:three).should be_false
+        strategy.knows?(:three).should be false
       end
       specify "#on? is false" do
-        strategy.on?(:three).should be_false
+        strategy.on?(:three).should be false
       end
     end
   end
@@ -53,20 +53,20 @@ describe Flip::CookieStrategy do
   describe "cookie manipulation" do
     it "can switch known features on" do
       strategy.switch! :one, true
-      strategy.on?(:one).should be_true
+      strategy.on?(:one).should be true
     end
     it "can switch unknown features on" do
       strategy.switch! :three, true
-      strategy.on?(:three).should be_true
+      strategy.on?(:three).should be true
     end
     it "can switch features off" do
       strategy.switch! :two, false
-      strategy.on?(:two).should be_false
+      strategy.on?(:two).should be false
     end
     it "can delete knowledge of a feature" do
       strategy.delete! :one
-      strategy.on?(:one).should be_false
-      strategy.knows?(:one).should be_false
+      strategy.on?(:one).should be false
+      strategy.knows?(:one).should be false
     end
   end
 

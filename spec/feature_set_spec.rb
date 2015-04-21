@@ -41,26 +41,26 @@ describe Flip::FeatureSet do
   describe "#default= and #on? with null strategy" do
     subject { feature_set_with_null_strategy }
     it "defaults to false" do
-      subject.on?(:feature).should be_false
+      subject.on?(:feature).should be false
     end
     it "can default to true" do
       subject.default = true
-      subject.on?(:feature).should be_true
+      subject.on?(:feature).should be true
     end
     it "accepts a proc returning true" do
       subject.default = proc { true }
-      subject.on?(:feature).should be_true
+      subject.on?(:feature).should be true
     end
     it "accepts a proc returning false" do
       subject.default = proc { false }
-      subject.on?(:feature).should be_false
+      subject.on?(:feature).should be false
     end
   end
 
   describe "feature set with null strategy then always-true strategy" do
     subject { feature_set_with_null_then_true_strategies }
     it "returns true due to second strategy" do
-      subject.on?(:feature).should be_true
+      subject.on?(:feature).should be true
     end
   end
 

@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency("i18n")
 
   s.add_development_dependency("rspec", "~> 2.5")
+  s.add_development_dependency("rspec-its")
   s.add_development_dependency("rake")
 end

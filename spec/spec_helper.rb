@@ -1,1 +1,3 @@
-require "flip"
+require 'flip'
+require 'pry'
+require 'rspec/its'

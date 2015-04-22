@@ -49,7 +49,7 @@ class Feature < ActiveRecord::Base
   include Flip::Declarable
 
   # The recommended Flip strategy stack.
-  strategy Flip::SessionStrategy # alternatively can use strategy Flip::CookieStrategy for cookie-based
+  strategy Flip::CookieStrategy # alternatively can use strategy Flip::CookieStrategy for session-based
   strategy Flip::DatabaseStrategy
   strategy Flip::DefaultStrategy
   default false

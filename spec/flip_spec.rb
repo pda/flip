@@ -18,16 +18,16 @@ describe Flip do
 
   describe ".on?" do
     it "returns true for enabled features" do
-      Flip.on?(:one).should be_true
+      Flip.on?(:one).should be true
     end
     it "returns false for disabled features" do
-      Flip.on?(:two).should be_false
+      Flip.on?(:two).should be false
     end
   end
 
   describe "dynamic predicate methods" do
-    its(:one?) { should be_true }
-    its(:two?) { should be_false }
+    its(:one?) { should be true }
+    its(:two?) { should be false }
   end
 
 end

@@ -37,7 +37,7 @@ describe Flip::DatabaseStrategy do
 
   subject { strategy }
 
-  its(:switchable?) { should be_true }
+  its(:switchable?) { should be true }
   its(:description) { should be_present }
 
   let(:db_result) { [] }

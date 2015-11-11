@@ -1,1 +1,2 @@
-require "flip"
+require 'flip'
+require 'rspec/its'

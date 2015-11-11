@@ -9,6 +9,7 @@
 # Flip files.
 %w{
   abstract_strategy
+  cacheable
   controller_filters
   cookie_strategy
   database_strategy

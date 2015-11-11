@@ -158,6 +158,23 @@ end
 mount Flip::Engine => "/admin/features"
 ```
 
+Cacheable
+---------
+
+You can optimize your feature to ensure that it doesn't make a ton of feature
+calls by adding Cacheable to your model.
+```ruby
+extend Flip::Cacheable
+```
+
+This will ensure that your features are eager loaded with one call to the database 
+instead of every call to Flip#on? generating a call to the database.  This is
+helpful if you have a larger Rails application and more than a few features
+defined.
+
+To start or reset the cache, just call #start_feature_cache.
+
+
 ----
 Created by Paul Annesley
 Copyright © 2011-2013 Learnable Pty Ltd, [MIT Licence](http://www.opensource.org/licenses/mit-license.php).

@@ -41,7 +41,7 @@ describe Flip::Cacheable do
 
     context "after a cache clear" do
       before { model_class.start_feature_cache }
-      specify { model_class.use_feature_cache.should be_true }
+      specify { model_class.use_feature_cache.should eq true }
       specify { model_class.feature_cache.size == 3}
     end
   end

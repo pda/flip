@@ -28,7 +28,7 @@ module Flip
     end
 
     def delete! key
-      cookies.delete cookie_name(key)
+      cookies.delete cookie_name(key), domain: :all
     end
 
     def self.cookies= cookies

@@ -1,18 +1,28 @@
 require "spec_helper"
+require "action_dispatch"
+require "rack"
 
 class ControllerWithoutCookieStrategy; end
 class ControllerWithCookieStrategy
   def self.before_filter(_); end
   def self.after_filter(_); end
-  def cookies; []; end
+  def cookies; cookie_jar; end
   include Flip::CookieStrategy::Loader
+end
+
+def cookie_jar
+  env = Rack::MockRequest.env_for("/example")
+  request = ActionDispatch::TestRequest.new(env)
+  ActionDispatch::Cookies::CookieJar.build(request)
 end
 
 describe Flip::CookieStrategy do
 
   let(:cookies) do
-    { strategy.cookie_name(:one) => "true",
-      strategy.cookie_name(:two) => "false" }
+    cookie_jar.tap do |jar|
+      jar[strategy.cookie_name(:one)] = "true"
+      jar[strategy.cookie_name(:two)] = "false"
+    end
   end
   let(:strategy) do
     Flip::CookieStrategy.new.tap do |s|

@@ -5,12 +5,12 @@ module Flip
 
     def update
       strategy.switch! feature_key, turn_on?
-      redirect_to features_url
+      redirect_to flip.features_url
     end
 
     def destroy
       strategy.delete! feature_key
-      redirect_to features_url
+      redirect_to flip.features_url
     end
 
     private

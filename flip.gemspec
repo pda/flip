@@ -24,4 +24,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rspec", "~> 2.5")
   s.add_development_dependency("rspec-its")
   s.add_development_dependency("rake")
+  s.add_development_dependency("rack")
+  s.add_development_dependency("actionpack", ">= 3.0", "< 5")
 end

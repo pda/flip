@@ -2,8 +2,8 @@ require "spec_helper"
 
 class ControllerWithoutCookieStrategy; end
 class ControllerWithCookieStrategy
-  def self.before_filter(_); end
-  def self.after_filter(_); end
+  def self.before_action(_); end
+  def self.after_action(_); end
   def cookies; []; end
   include Flip::CookieStrategy::Loader
 end
@@ -76,8 +76,8 @@ describe Flip::CookieStrategy::Loader do
 
   it "adds filters when included in controller" do
     ControllerWithoutCookieStrategy.tap do |klass|
-      klass.should_receive(:before_filter).with(:flip_cookie_strategy_before)
-      klass.should_receive(:after_filter).with(:flip_cookie_strategy_after)
+      klass.should_receive(:before_action).with(:flip_cookie_strategy_before)
+      klass.should_receive(:after_action).with(:flip_cookie_strategy_after)
       klass.send :include, Flip::CookieStrategy::Loader
     end
   end

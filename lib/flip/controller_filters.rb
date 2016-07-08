@@ -1,4 +1,7 @@
 module Flip
+  # ControllerFilters is a name that refers to the fact that Rails
+  # before_action and after_action used to be before_filter and
+  # after_filter.
   module ControllerFilters
 
     extend ActiveSupport::Concern
@@ -6,7 +9,7 @@ module Flip
     module ClassMethods
 
       def require_feature key, options = {}
-        before_filter options do
+        before_action options do
           flip_feature_disabled key unless Flip.on? key
         end
       end

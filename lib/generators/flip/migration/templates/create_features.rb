@@ -1,3 +1,4 @@
+# Created by the flip gem, see https://github.com/pda/flip
 class CreateFeatures < ActiveRecord::Migration
   def change
     create_table :features do |t|

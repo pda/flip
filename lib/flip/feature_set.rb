@@ -15,7 +15,7 @@ module Flip
 
     def initialize
       @definitions = Hash.new { |_, k| raise "No feature declared with key #{k.inspect}" }
-      @strategies = Hash.new { |_, k| raise "No strategy named #{k}" }
+      @strategies = Hash.new { |_, k| raise "No strategy named #{k}. Valid strategies are #{@strategies.keys}" }
       @default = false
     end
 

@@ -1,0 +1,54 @@
+<div class="flip">
+  <h1>Feature Flippers</h1>
+  <table>
+    <thead>
+      <th class="name">Feature Name</th>
+      <th class="description">Description</th>
+      <th class="status">Status</th>
+      <% @p.strategies.each do |strategy| %>
+        <th>
+          <%= strategy.name %>
+          <span class="description"><%= strategy.description %></span>
+        </th>
+      <% end %>
+      <th>
+        Default
+        <span class="description">The system default when no strategies match.</span>
+      </th>
+    </thead>
+    <tbody>
+      <% @p.definitions.each do |definition| %>
+        <tr>
+          <td class="name"><%= definition.name %></td>
+          <td class="description"><%= definition.description %></td>
+          <%= content_tag :td, class: @p.status(definition) do %>
+            <%= @p.status definition %>
+          <% end %>
+          <% @p.strategies.each do |strategy| %>
+            <%= content_tag :td, class: @p.strategy_status(strategy, definition) || "pass" do %>
+              <%= @p.strategy_status strategy, definition %>
+              <% if strategy.switchable? %>
+                <%= form_tag(@p.switch_url(strategy, definition), method: :put) do %>
+                  <% unless @p.strategy_status(strategy, definition) == "on" %>
+                    <%= submit_tag "Switch On" %>
+                  <% end %>
+                  <% unless @p.strategy_status(strategy, definition) == "off" %>
+                    <%= submit_tag "Switch Off" %>
+                  <% end %>
+                <% end %>
+                <% unless @p.strategy_status(strategy, definition).blank? %>
+                  <%= form_tag(@p.switch_url(strategy, definition), method: :delete) do %>
+                    <%= submit_tag "Delete" %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= content_tag :td, class: @p.default_status(definition) do %>
+            <%= @p.default_status definition %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

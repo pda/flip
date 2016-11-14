@@ -51,7 +51,7 @@ class Feature < ActiveRecord::Base
   # The recommended Flip strategy stack.
   strategy Flip::CookieStrategy
   strategy Flip::DatabaseStrategy
-  strategy Flip::DefaultStrategy
+  strategy Flip::DeclarationStrategy
   default false
 
   # A basic feature declaration.

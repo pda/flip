@@ -32,7 +32,7 @@ module Flip
     end
 
     def self.cookies= cookies
-      @cookies = cookies
+      Thread.current[:flip_cookies] = cookies
     end
 
     def cookie_name(definition)
@@ -43,7 +43,7 @@ module Flip
     private
 
     def cookies
-      self.class.instance_variable_get(:@cookies) || {}
+      Thread.current[:flip_cookies] || {}
     end
 
     # Include in ApplicationController to push cookies into CookieStrategy.

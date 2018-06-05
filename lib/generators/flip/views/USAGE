@@ -1,0 +1,8 @@
+Description:
+    Generates flip/features/index view template.
+
+Example:
+    rails generate flip:views
+
+    This will create:
+        app/views/flip/features/index.html.erb

@@ -7,13 +7,11 @@ module Flip
       "The default status declared with the feature."
     end
 
-    def knows? definition
-      !definition.options[:default].nil?
-    end
-
-    def on? definition
-      default = definition.options[:default]
-      default.is_a?(Proc) ? default.call(definition) : default
+    def status definition
+      if !definition.options[:default].nil?
+        default = definition.options[:default]
+        default.is_a?(Proc) ? default.call(definition) : default
+      end
     end
 
   end

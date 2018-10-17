@@ -7,6 +7,11 @@ module Flip
 
     def description; ""; end
 
+    # Returns true for on, false for off and nil for an unknown state
+    def status definition
+      on?(definition) if knows?(definition)
+    end
+
     # Whether the strategy knows the on/off state of the switch.
     def knows? definition; raise; end
 

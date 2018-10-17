@@ -30,9 +30,8 @@ module Flip
       end
 
       def strategy_status(strategy, definition)
-        if strategy.knows? definition
-          strategy.on?(definition) ? "on" : "off"
-        end
+        status = strategy.status(definition)
+        { true => 'on', false => 'off', nil => nil }[status]
       end
 
       def switch_url(strategy, definition)

@@ -11,9 +11,8 @@ module Flip
     end
 
     def status definition
-      if !!feature(definition)
-        feature(definition).enabled?
-      end
+      feature = feature(definition)
+      feature.enabled? if feature
     end
 
     def switchable?

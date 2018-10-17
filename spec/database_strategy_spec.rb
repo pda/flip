@@ -36,7 +36,7 @@ describe Flip::DatabaseStrategy do
 
   context "with a feature definition" do
     before do
-      allow(model_klass).to(receive(:where).with(key: "one").and_return(db_result))
+      allow(model_klass).to(receive(:where).with(key: "one").once.and_return(db_result))
     end
 
     let(:definition) { double("definition", key: "one") }

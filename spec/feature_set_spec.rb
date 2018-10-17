@@ -1,26 +1,18 @@
 require "spec_helper"
 
 class NullStrategy < Flip::AbstractStrategy
-  def knows?(d); false; end
+  def status(d); nil; end
 end
 
 class TrueStrategy < Flip::AbstractStrategy
-  def knows?(d); true; end
-  def on?(d); true; end
+  def status(d); true; end
 end
 
 describe Flip::FeatureSet do
-
-  let :feature_set_with_null_strategy do
-    Flip::FeatureSet.new.tap do |s|
-      s << Flip::Definition.new(:feature)
-      s.add_strategy NullStrategy
-    end
-  end
-
-  let :feature_set_with_null_then_true_strategies do
-    feature_set_with_null_strategy.tap do |s|
-      s.add_strategy TrueStrategy
+  subject(:feature_set) do
+    Flip::FeatureSet.new.tap do |fs|
+      fs << Flip::Definition.new(:feature)
+      strategies.each { |s| fs.add_strategy(s) }
     end
   end
 
@@ -39,7 +31,7 @@ describe Flip::FeatureSet do
   end
 
   describe "#default= and #on? with null strategy" do
-    subject { feature_set_with_null_strategy }
+    let(:strategies) { [NullStrategy] }
     it "defaults to false" do
       subject.on?(:feature).should be false
     end
@@ -58,8 +50,16 @@ describe Flip::FeatureSet do
   end
 
   describe "feature set with null strategy then always-true strategy" do
-    subject { feature_set_with_null_then_true_strategies }
+    let(:strategies) { [NullStrategy, TrueStrategy] }
     it "returns true due to second strategy" do
+      subject.on?(:feature).should be true
+    end
+  end
+
+  describe "feature set with always-true strategy then null strategy" do
+    let(:strategies) { [TrueStrategy, NullStrategy] }
+    it "returns true without evaluating null strategy" do
+      feature_set.strategy('null').should_receive(:status).never
       subject.on?(:feature).should be true
     end
   end

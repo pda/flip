@@ -23,50 +23,39 @@ describe Flip::CookieStrategy do
   its(:description) { should be_present }
   it { should be_switchable }
 
-  describe "cookie interrogration" do
+  describe "cookie strategy status" do
+    subject { strategy.status(definition) }
+
     context "enabled feature" do
-      specify "#knows? is true" do
-        strategy.knows?(:one).should be true
-      end
-      specify "#on? is true" do
-        strategy.on?(:one).should be true
-      end
+      let(:definition) { :one }
+      it { should be true }
     end
     context "disabled feature" do
-      specify "#knows? is true" do
-        strategy.knows?(:two).should be true
-      end
-      specify "#on? is false" do
-        strategy.on?(:two).should be false
-      end
+      let(:definition) { :two }
+      it { should be false }
     end
     context "feature with no cookie present" do
-      specify "#knows? is false" do
-        strategy.knows?(:three).should be false
-      end
-      specify "#on? is false" do
-        strategy.on?(:three).should be false
-      end
+      let(:definition) { :three }
+      it { should be_nil }
     end
   end
 
   describe "cookie manipulation" do
     it "can switch known features on" do
       strategy.switch! :one, true
-      strategy.on?(:one).should be true
+      strategy.status(:one).should be true
     end
     it "can switch unknown features on" do
       strategy.switch! :three, true
-      strategy.on?(:three).should be true
+      strategy.status(:three).should be true
     end
     it "can switch features off" do
       strategy.switch! :two, false
-      strategy.on?(:two).should be false
+      strategy.status(:two).should be false
     end
     it "can delete knowledge of a feature" do
       strategy.delete! :one
-      strategy.on?(:one).should be false
-      strategy.knows?(:one).should be false
+      strategy.status(:one).should be_nil
     end
   end
 
@@ -91,8 +80,8 @@ describe Flip::CookieStrategy::Loader do
         expect {
           controller.flip_cookie_strategy_before
         }.to change {
-          [ strategy.knows?(:test), strategy.on?(:test) ]
-        }.from([false, false]).to([true, true])
+          strategy.status(:test)
+        }.from(nil).to(true)
       end
     end
     describe "#flip_cookie_strategy_after" do
@@ -103,8 +92,8 @@ describe Flip::CookieStrategy::Loader do
         expect {
           controller.flip_cookie_strategy_after
         }.to change {
-          [ strategy.knows?(:test), strategy.on?(:test) ]
-        }.from([true, true]).to([false, false])
+          strategy.status(:test)
+        }.from(true).to(nil)
       end
     end
   end

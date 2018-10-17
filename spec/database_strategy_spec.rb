@@ -1,9 +1,6 @@
 require "spec_helper"
 
 describe Flip::DatabaseStrategy do
-
-  let(:definition) { double("definition", key: "one") }
-  let(:strategy) { Flip::DatabaseStrategy.new(model_klass) }
   let(:model_klass) do
     class Sample
       attr_accessor :key
@@ -32,78 +29,67 @@ describe Flip::DatabaseStrategy do
     end
   end
 
-  let(:enabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { true } } }
-  let(:disabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { false } } }
-
-  subject { strategy }
+  subject(:strategy) { Flip::DatabaseStrategy.new(model_klass) }
 
   its(:switchable?) { should be true }
   its(:description) { should be_present }
 
-  let(:db_result) { [] }
-  before do
-    allow(model_klass).to(receive(:where).with(key: "one").and_return(db_result))
-  end
+  context "with a feature definition" do
+    before do
+      allow(model_klass).to(receive(:where).with(key: "one").and_return(db_result))
+    end
 
-  describe "#knows?" do
-    context "for unknown key" do
-      it "returns true" do
-        expect(strategy.knows?(definition)).to eq(false)
+    let(:definition) { double("definition", key: "one") }
+    let(:enabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { true } } }
+    let(:disabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { false } } }
+
+    describe "#status" do
+      subject { strategy.status(definition) }
+
+      context "for unknown key" do
+        let(:db_result) { [] }
+        it { should be_nil }
+      end
+      context "for an enabled record" do
+        let(:db_result) { [enabled_record] }
+        it { should be true }
+      end
+      context "for a disabled record" do
+        let(:db_result) { [disabled_record] }
+        it { should be false }
+      end
+
+      describe "with feature cache" do
+        before { model_klass.start_feature_cache }
+        context "for an enabled record" do
+          let(:db_result) { [enabled_record] }
+          it { should be true }
+        end
       end
     end
-    context "for known key" do
-      let(:db_result) { [disabled_record] }
-      it "returns false" do
-        expect(strategy.knows?(definition)).to eq(true)
+
+    describe "#switch!" do
+      let(:db_result) { [] }
+      it "can switch a feature on" do
+        expect(db_result).to receive(:first_or_initialize).and_return(disabled_record)
+        expect(disabled_record).to receive(:enabled=).with(true)
+        expect(disabled_record).to receive(:save!)
+        strategy.switch! :one, true
+      end
+      it "can switch a feature off" do
+        expect(db_result).to receive(:first_or_initialize).and_return(enabled_record)
+        expect(enabled_record).to receive(:enabled=).with(false)
+        expect(enabled_record).to receive(:save!)
+        strategy.switch! :one, false
       end
     end
-  end
 
-  describe "#on? with feature cache" do
-    before { model_klass.start_feature_cache }
-    context "for an enabled record" do
+    describe "#delete!" do
       let(:db_result) { [enabled_record] }
-      it "returns true" do
-        expect(strategy.on?(definition)).to eq(true)
+      it "can delete a feature record" do
+        enabled_record.should_receive(:try).with(:destroy)
+        strategy.delete! :one
       end
-    end
-  end
-
-  describe "#on?" do
-    context "for an enabled record" do
-      let(:db_result) { [enabled_record] }
-      it "returns true" do
-        expect(strategy.on?(definition)).to eq(true)
-      end
-    end
-    context "for a disabled record" do
-      let(:db_result) { [disabled_record] }
-      it "returns true" do
-        expect(strategy.on?(definition)).to eq(false)
-      end
-    end
-  end
-
-  describe "#switch!" do
-    it "can switch a feature on" do
-      expect(db_result).to receive(:first_or_initialize).and_return(disabled_record)
-      expect(disabled_record).to receive(:enabled=).with(true)
-      expect(disabled_record).to receive(:save!)
-      strategy.switch! :one, true
-    end
-    it "can switch a feature off" do
-      expect(db_result).to receive(:first_or_initialize).and_return(enabled_record)
-      expect(enabled_record).to receive(:enabled=).with(false)
-      expect(enabled_record).to receive(:save!)
-      strategy.switch! :one, false
-    end
-  end
-
-  describe "#delete!" do
-    let(:db_result) { [enabled_record] }
-    it "can delete a feature record" do
-      enabled_record.should_receive(:try).with(:destroy)
-      strategy.delete! :one
     end
   end
 

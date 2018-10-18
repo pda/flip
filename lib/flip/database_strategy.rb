@@ -10,12 +10,9 @@ module Flip
       "Database backed, applies to all users."
     end
 
-    def knows? definition
-      !!feature(definition)
-    end
-
-    def on? definition
-      feature(definition).enabled?
+    def status definition
+      feature = feature(definition)
+      feature.enabled? if feature
     end
 
     def switchable?

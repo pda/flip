@@ -6,14 +6,12 @@ module Flip
       "Uses cookies to apply only to your session."
     end
 
-    def knows? definition
-      cookies.key? cookie_name(definition)
-    end
-
-    def on? definition
-      cookie = cookies[cookie_name(definition)]
-      cookie_value = cookie.is_a?(Hash) ? cookie['value'] : cookie
-      cookie_value === 'true'
+    def status definition
+      if cookies.key? cookie_name(definition)
+        cookie = cookies[cookie_name(definition)]
+        cookie_value = cookie.is_a?(Hash) ? cookie['value'] : cookie
+        cookie_value === 'true'
+      end
     end
 
     def switchable?

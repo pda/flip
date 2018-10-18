@@ -17,11 +17,12 @@ describe Flip do
   end
 
   describe ".on?" do
+    subject { Flip.on?(key) }
     it "returns true for enabled features" do
-      Flip.on?(:one).should be true
+      expect(Flip.on?(:one)).to be true
     end
     it "returns false for disabled features" do
-      Flip.on?(:two).should be false
+      expect(Flip.on?(:two)).to be false
     end
   end
 

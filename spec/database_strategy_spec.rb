@@ -2,14 +2,6 @@ require "spec_helper"
 
 describe Flip::DatabaseStrategy do
   let(:model_klass) do
-    class Sample
-      attr_accessor :key
-
-      def enabled?
-        true
-      end
-    end
-
     Class.new do
       extend Flip::Cacheable
       extend Flip::Declarable
@@ -18,13 +10,20 @@ describe Flip::DatabaseStrategy do
       feature :three, default: true
 
       def self.all
-        list = []
-        keys = ['one', 'two', 'three']
-        3.times do |i|
-          list << Sample.new
-          list.last.key = keys[i]
+        %w[one two three].map do |key|
+          new(key, true)
         end
-        list
+      end
+
+      attr_reader :key
+
+      def initialize(key, enabled)
+        @key = key
+        @enabled = enabled
+      end
+
+      def enabled?
+        @enabled
       end
     end
   end
@@ -40,8 +39,8 @@ describe Flip::DatabaseStrategy do
     end
 
     let(:definition) { double("definition", key: "one") }
-    let(:enabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { true } } }
-    let(:disabled_record) { model_klass.new.tap { |m| m.stub(:enabled?) { false } } }
+    let(:enabled_record) { model_klass.new('enabled_feature', true) }
+    let(:disabled_record) { model_klass.new('disabled_feature', false) }
 
     describe "#status" do
       subject { strategy.status(definition) }
@@ -87,7 +86,7 @@ describe Flip::DatabaseStrategy do
     describe "#delete!" do
       let(:db_result) { [enabled_record] }
       it "can delete a feature record" do
-        enabled_record.should_receive(:try).with(:destroy)
+        expect(enabled_record).to receive(:try).with(:destroy)
         strategy.delete! :one
       end
     end

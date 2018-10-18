@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency("activesupport", ">= 3.0", "< 5.1")
   s.add_dependency("i18n")
 
-  s.add_development_dependency("rspec", "~> 2.5")
+  s.add_development_dependency("rspec", "~> 3.5")
   s.add_development_dependency("rspec-its")
   s.add_development_dependency("rake")
 end

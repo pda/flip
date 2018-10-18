@@ -2,3 +2,5 @@
 .bundle
 Gemfile.lock
 pkg/*
+.byebug_history
+.ruby-version

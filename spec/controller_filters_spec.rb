@@ -5,23 +5,15 @@ class ControllerWithFlipFilters
 end
 
 describe ControllerWithFlipFilters do
-
   describe ".require_feature" do
-
     it "adds before_action without options" do
-      ControllerWithFlipFilters.tap do |klass|
-        klass.should_receive(:before_action).with({})
-        klass.send(:require_feature, :testable)
-      end
+      expect(ControllerWithFlipFilters).to receive(:before_action).with({})
+      ControllerWithFlipFilters.require_feature(:testable)
     end
 
     it "adds before_action with options" do
-      ControllerWithFlipFilters.tap do |klass|
-        klass.should_receive(:before_action).with({ only: [ :show ] })
-        klass.send(:require_feature, :testable, only: [ :show ])
-      end
+      expect(ControllerWithFlipFilters).to receive(:before_action).with(only: [:show])
+      ControllerWithFlipFilters.require_feature(:testable, only: [:show])
     end
-
   end
-
 end

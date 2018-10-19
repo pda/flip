@@ -1,10 +1,7 @@
 # Uses cookie to determine feature state.
 module Flip
   class CookieStrategy < AbstractStrategy
-
-    def description
-      "Uses cookies to apply only to your session."
-    end
+    description "Uses cookies to apply only to your session."
 
     def status definition
       if cookies.key? cookie_name(definition)

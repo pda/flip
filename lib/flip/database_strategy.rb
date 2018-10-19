@@ -1,13 +1,11 @@
 # Database backed system-wide
 module Flip
   class DatabaseStrategy < AbstractStrategy
+    description "Database backed, applies to all users."
 
-    def initialize(model_klass = Feature)
+    def initialize(model_klass = Feature, **opts)
+      super
       @klass = model_klass
-    end
-
-    def description
-      "Database backed, applies to all users."
     end
 
     def status definition

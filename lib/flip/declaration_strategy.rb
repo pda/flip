@@ -2,10 +2,7 @@
 # May be boolean or a Proc to be passed the definition.
 module Flip
   class DeclarationStrategy < AbstractStrategy
-
-    def description
-      "The default status declared with the feature."
-    end
+    description "The default status declared with the feature."
 
     def status definition
       if !definition.options[:default].nil?

@@ -1,11 +1,15 @@
 module Flip
   class AbstractStrategy
+    def initialize(*args, description: self.class.description, **opts)
+      @description = description
+    end
 
     def name
       self.class.name.split("::").last.gsub(/Strategy$/, "").underscore
     end
 
-    def description; ""; end
+    attr_reader :description
+    # def description; @description || self.class.description; end
 
     # Returns true for on, false for off and nil for an unknown state
     def status definition; raise; end
@@ -19,5 +23,10 @@ module Flip
     def switch! key, on; raise; end
     def delete! key; raise; end
 
+    class << self
+      def description(text = nil)
+        text.nil? ? @description : @description = text.freeze
+      end
+    end
   end
 end

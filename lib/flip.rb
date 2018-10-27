@@ -19,6 +19,8 @@
   facade
   feature_set
   forbidden
+  redis_strategy
+  redis_cache
 }.each { |name| require "flip/#{name}" }
 
 require "flip/engine" if defined?(Rails)

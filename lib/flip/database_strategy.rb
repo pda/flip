@@ -1,6 +1,19 @@
 # Database backed system-wide
 module Flip
   class DatabaseStrategy < AbstractStrategy
+    class << self
+      def cache(with:, model: Feature, **cache_opts)
+        db_strat = new(model)
+        case with
+        when :redis
+          RedisCache.new(db_strat, cache_opts)
+        when :memory
+          MemoryCache.new(db_strat, cache_opts)
+        else
+          raise ArgumentError, "Unrecognized Flip caching strategy: #{with.inspect}"
+        end
+      end
+    end
 
     def initialize(model_klass = Feature)
       @klass = model_klass

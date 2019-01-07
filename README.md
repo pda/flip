@@ -26,7 +26,7 @@ Flip has a dashboard UI that's easy to understand and use.
 Install
 -------
 
-**Rails 3.0, 3.1 and 3.2+**
+**Rails >= 4.0**
 
     # Gemfile
     gem "flip"

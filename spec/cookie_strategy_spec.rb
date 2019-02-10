@@ -1,4 +1,5 @@
 require "spec_helper"
+require "action_dispatch"
 
 class ControllerWithoutCookieStrategy; end
 class ControllerWithCookieStrategy
@@ -8,14 +9,40 @@ class ControllerWithCookieStrategy
   include Flip::CookieStrategy::Loader
 end
 
-describe Flip::CookieStrategy do
-  let(:strategy) do
-    Flip::CookieStrategy.new.tap do |s|
-      Flip::CookieStrategy.cookies = {
-        s.cookie_name(:one) => "true",
-        s.cookie_name(:two) => "false",
-      }
+module MockRails
+  class << self
+    def cookie(hash)
+      case ActiveSupport.version
+      when Gem::Requirement.new("~> 4.0") then rails_4
+      when Gem::Requirement.new("~> 5.0") then rails_5
+      else raise NotImplementedError, "Rails #{ActiveSupport.version} not suported"
+      end.update(hash)
     end
+
+    private
+
+    def rails_4
+      ActionDispatch::Cookies::CookieJar.new(nil, "www.example.com", false)
+    end
+
+    def rails_5
+      request_mock = Struct.new(:host, :ssl?).new("www.example.com", false)
+      ActionDispatch::Cookies::CookieJar.new(request_mock)
+    end
+  end
+end
+
+describe Flip::CookieStrategy do
+  let(:strategy) { Flip::CookieStrategy.new }
+  let(:cookies) do
+    MockRails.cookie(
+      strategy.cookie_name(:one) => "true",
+      strategy.cookie_name(:two) => "false",
+    )
+  end
+
+  before do
+    Flip::CookieStrategy.cookies = cookies
   end
 
   its(:description) { should be_present }
@@ -43,6 +70,13 @@ describe Flip::CookieStrategy do
       strategy.switch! :one, true
       expect(strategy.status(:one)).to be true
     end
+    it "can flip known features on for all subdomains" do
+      strategy.switch! :two, true
+      expect(strategy.status(:two)).to be true
+
+      headers = Hash.new.tap { |h| cookies.write(h) }
+      expect(headers["Set-Cookie"]).to eq "flip_two=true; domain=.example.com; path=/"
+    end
     it "can switch unknown features on" do
       strategy.switch! :three, true
       expect(strategy.status(:three)).to be true
@@ -51,8 +85,9 @@ describe Flip::CookieStrategy do
       strategy.switch! :two, false
       expect(strategy.status(:two)).to be false
     end
-    it "can delete knowledge of a feature" do
+    it "can delete knowledge of a feature for all subdomains" do
       strategy.delete! :one
+      expect(cookies).to be_deleted(strategy.cookie_name(:one), domain: :all)
       expect(strategy.status(:one)).to be_nil
     end
   end
@@ -84,7 +119,7 @@ describe Flip::CookieStrategy::Loader do
     end
     describe "#flip_cookie_strategy_after" do
       before do
-        Flip::CookieStrategy.cookies = { strategy.cookie_name(:test) => "true" }
+        Flip::CookieStrategy.cookies = MockRails.cookie(strategy.cookie_name(:test) => "true")
       end
       it "passes controller cookies to CookieStrategy" do
         expect {

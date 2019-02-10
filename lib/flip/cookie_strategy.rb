@@ -7,11 +7,8 @@ module Flip
     end
 
     def status definition
-      if cookies.key? cookie_name(definition)
-        cookie = cookies[cookie_name(definition)]
-        cookie_value = cookie.is_a?(Hash) ? cookie['value'] : cookie
-        cookie_value === 'true'
-      end
+      cookie = cookies.fetch(cookie_name(definition), nil)
+      cookie == 'true' if cookie
     end
 
     def switchable?
@@ -20,13 +17,13 @@ module Flip
 
     def switch! key, on
       cookies[cookie_name(key)] = {
-        'value' => (on ? "true" : "false"),
-        'domain' => :all
+        value: (on ? "true" : "false"),
+        domain: :all
       }
     end
 
     def delete! key
-      cookies.delete cookie_name(key)
+      cookies.delete(cookie_name(key), domain: :all)
     end
 
     def self.cookies= cookies

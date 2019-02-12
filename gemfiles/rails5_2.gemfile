@@ -1,0 +1,13 @@
+source "https://rubygems.org"
+
+gem "activesupport", "~>5.2.0"
+gem "i18n"
+
+group :development, :test do
+  gem "actionpack"
+  gem "rspec", "~> 3.5"
+  gem "rspec-its"
+  gem "rake"
+end
+
+gemspec path: "../"

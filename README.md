@@ -15,7 +15,7 @@ There are three layers of strategies per feature:
 
 * default
 * database, to flip features site-wide for all users
-* cookie, to flip features just for you (or someone else)
+* cookie/session, uses cookies or session to flip features just for you (or someone else)
 
 There is also a configurable system-wide default - !Rails.env.production?` works nicely.
 
@@ -30,10 +30,10 @@ Install
 
     # Gemfile
     gem "flip"
-    
+
     # Generate the model and migration
     > rails g flip:install
-    
+
     # Run the migration
     > rake db:migrate
 
@@ -49,7 +49,7 @@ class Feature < ActiveRecord::Base
   extend Flip::Declarable
 
   # The recommended Flip strategy stack.
-  strategy Flip::CookieStrategy
+  strategy Flip::CookieStrategy # alternatively can use strategy Flip::CookieStrategy for session-based
   strategy Flip::DatabaseStrategy
   strategy Flip::DefaultStrategy
   default false

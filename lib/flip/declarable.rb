@@ -13,6 +13,7 @@ module Flip
     # Adds a strategy for determining feature status.
     def strategy(strategy)
       FeatureSet.instance.add_strategy strategy
+      ActionController::Base.send(:include, "#{strategy}::Loader".constantize) if [Flip::SessionStrategy, Flip::CookieStrategy].include? strategy
     end
 
     # The default response, boolean or a Proc to be called.

@@ -19,6 +19,7 @@
   facade
   feature_set
   forbidden
+  session_strategy
 }.each { |name| require "flip/#{name}" }
 
 require "flip/engine" if defined?(Rails)

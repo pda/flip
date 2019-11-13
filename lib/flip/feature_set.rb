@@ -34,8 +34,8 @@ module Flip
     end
 
     # Adds a strategy for determing feature status.
-    def add_strategy(strategy)
-      strategy = strategy.new if strategy.is_a? Class
+    def add_strategy(strategy, klass = nil)
+      strategy = strategy.new(klass) if strategy.is_a? Class
       @strategies[strategy.name] = strategy
     end
 

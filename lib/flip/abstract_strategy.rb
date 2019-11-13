@@ -1,6 +1,9 @@
 module Flip
   class AbstractStrategy
 
+    def initialize(_model_class = nil)
+    end
+
     def name
       self.class.name.split("::").last.gsub(/Strategy$/, "").underscore
     end

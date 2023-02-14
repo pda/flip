@@ -1,7 +1,7 @@
 Flip &mdash; flip your features
 ================
 
-[![Build Status](https://travis-ci.org/pda/flip.svg?branch=master)](https://travis-ci.org/pda/flip)
+[![Build Status](https://github.com/pda/flip/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/pda/flip/actions/workflows/test.yml)
 
 **Flip** provides a declarative, layered way of enabling and disabling application functionality at run-time.
 
